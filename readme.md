@@ -1,4 +1,4 @@
-![TEC-1F](crsjones/TEC-1F/TEC-1FAssembled.jpg)
+![TEC-1F](https://github.com/crsjones/TEC-1/blob/main/TEC-1FAssembled.jpg)
 # TEC-1
 
 The TEC-1 is a single board Z80 computer that was originally presented in Talking Electronics Magazine Issue 10, published in 1983.
