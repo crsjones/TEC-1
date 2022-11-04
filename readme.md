@@ -9,5 +9,11 @@ It's still very much a retro design, but the two main changes, adding a bit bang
 
 Colin Mitchell provided the Protel PCB design file for the TEC-1D, since there had not been a Protel schematic my first task was to reverse engineer the PCB file to create a TEC-1D schematic, this can also be found here. 
 
+##NOTE: The Gerber files for the TEC-1D or the TEC-1F design are not available.
+
+
+
+
+
 
 
