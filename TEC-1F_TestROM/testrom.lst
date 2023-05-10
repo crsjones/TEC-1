@@ -25,23 +25,41 @@
 0025   0000             ;THE Z80 STARTS EXECUTING INSTRUCTIONS FROM HERE
 0026   0000             ;
 0027   0000             	.ORG	0000H
-0028   0000 AF          	XOR	A	;CLEAR A
-0029   0001 A8          AGAIN	XOR	B	;RESET COUNTER
-0030   0002 D3 01       LOOP	OUT	(SCAN),A
-0031   0004 10 FC       	DJNZ LOOP
-0032   0006 EE 80       	XOR	%10000000	;FLIP B7
-0033   0008 C3 01 00    	JP	AGAIN	;GO AGAIN
-0034   000B             	.END
-0035   000B             
-0036   000B             
+0028   0000 F3          START	DI	; LET'S DISABLE INTERRUPTS
+0029   0001 AF          	XOR	A	;CLEAR A
+0030   0002 A8          AGAIN	XOR	B	;RESET COUNTER
+0031   0003 D3 01       LOOP	OUT	(SCAN),A
+0032   0005 10 FC       	DJNZ LOOP
+0033   0007 EE 80       	XOR	%10000000	;FLIP B7
+0034   0009 C3 02 00    	JP	AGAIN	;GO AGAIN
+0035   000C             
+0036   000C             ;
+0037   000C             ; RESTART 38H - RST 7  INTERRUPT
+0038   000C             ; IF INTERRUPTS ARE ENABLED,AND AN INT OCCURS- FURTHER INTERRUPTS
+0039   000C             ; ARE DISABLED, THE PROGRAM COUNTER IS PUSHED ONTO THE STACK, AND EXECUTION
+0040   000C             ; STARTS HERE
+0041   000C             ;
+0042   0038             	.ORG	0038H
+0043   0038 C3 00 00    	JP	START       ; NO RAM FOR THE STACK, BESIDES INTERRUPTS ARE DISABLED
+0044   003B             ;
+0045   003B             ; RESTART 66H NMI VECTOR
+0046   003B             ; SAME AS ABOVE BUT NMI CANNOT BE DISABLED.
+0047   003B             ;
+0048   0066             	.ORG	0066H
+0049   0066             ; THE TEC-1F HAS NMI CONNECTED TO THE INVERTED 74C923 KEYBOARD ENCODER DA 
+0050   0066             ; (DATA AVAILABLE) OUTPUT SO LETS DO A HALT 
+0051   0066 76              HALT
+0052   0067             	.END
+0053   0067             
+0054   0067             
 
 
 
 Label        Value      Label        Value      Label        Value
 ------------------      ------------------      ------------------
-AGAIN         0001      DISPLY        0002      KEYBUF        0000      
-LOOP          0002      PORT3         0003      PORT4         0004      
+AGAIN         0002      DISPLY        0002      KEYBUF        0000      
+LOOP          0003      PORT3         0003      PORT4         0004      
 PORT5         0005      PORT6         0006      PORT7         0007      
-SCAN          0001      
+SCAN          0001      START         0000      
 
 tasm: Number of errors = 0
