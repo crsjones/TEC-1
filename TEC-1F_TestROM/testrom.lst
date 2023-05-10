@@ -1,0 +1,47 @@
+0001   0000             ;
+0002   0000             ; TEC-1F TEST ROM
+0003   0000             ; CRAIG JONES 2023
+0004   0000             ;
+0005   0000             ;
+0006   0000             ; TEC-1 I/O ASSIGNMENTS
+0007   0000             ;
+0008   0000             KEYBUF	.EQU	00H	;MM74C923N KEYBOARD ENCODER
+0009   0000             SCAN	.EQU	01H	;DISPLAY SCAN LATCH
+0010   0000             DISPLY	.EQU	02H	;DISPLAY LATCH
+0011   0000             PORT3	.EQU	03H	;ST3 (8X8), STROBE (RELAY BOARD) DATLATCH (DAT BOARD)
+0012   0000             PORT4	.EQU	04H	;ST4 (8X8), LCD 'E' (DAT BOARD)
+0013   0000             PORT5	.EQU	05H
+0014   0000             PORT6	.EQU	06H
+0015   0000             PORT7	.EQU	07H	;ENABLE/DISABLE SINGLE STEPPER (IF INSTALLED)
+0016   0000             
+0017   0000             ;----------------------------
+0018   0000             ; TOGGLE THE SPEAKER AND LED
+0019   0000             ;----------------------------
+0020   0000             ; MAKES AN AUDIBLE TONE AT 4MHZ 
+0021   0000             ; AND A CLICK, CLICK, USING THE RC OSCILLATOR 
+0022   0000             ;
+0023   0000             ;  RESTART 00H - RST 0
+0024   0000             ;WHEN POWER IS APPLIED TO THE TEC-1F
+0025   0000             ;THE Z80 STARTS EXECUTING INSTRUCTIONS FROM HERE
+0026   0000             ;
+0027   0000             	.ORG	0000H
+0028   0000 AF          	XOR	A	;CLEAR A
+0029   0001 A8          AGAIN	XOR	B	;RESET COUNTER
+0030   0002 D3 01       LOOP	OUT	(SCAN),A
+0031   0004 10 FC       	DJNZ LOOP
+0032   0006 EE 80       	XOR	%10000000	;FLIP B7
+0033   0008 C3 01 00    	JP	AGAIN	;GO AGAIN
+0034   000B             	.END
+0035   000B             
+0036   000B             
+
+
+
+Label        Value      Label        Value      Label        Value
+------------------      ------------------      ------------------
+AGAIN         0001      DISPLY        0002      KEYBUF        0000      
+LOOP          0002      PORT3         0003      PORT4         0004      
+PORT5         0005      PORT6         0006      PORT7         0007      
+SCAN          0001      
+
+tasm: Number of errors = 0
